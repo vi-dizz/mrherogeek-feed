@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MR.HEROGEEK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;600;800&family=Oswald:wght@500;700&display=swap">
+<style>
+/* Палитра и шрифты взяты с mrherogeek.com: глубокий зелёный, жёлтый, кремовый, коралловый; Oswald для заголовков */
+:root{color-scheme:dark;--bg:#063d30;--bg2:#0a4a3a;--deep:#03241c;--yellow:#fcd718;--coral:#ff8562;--cream:#fffef4;--ink:#0b2a22;--soft:#e9f0e4;
+ --head:"Oswald","Arial Narrow",Arial,sans-serif;--body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;scroll-padding-top:60px}
+html{background:var(--bg)}
+body{margin:0;background:transparent;color:var(--ink);font-family:var(--body)}
+.bgp{position:fixed;inset:0;z-index:-1;pointer-events:none;background-color:#08392d;background-repeat:no-repeat;background-position:left top;background-size:cover}
+.wrap{max-width:520px;margin:0 auto;padding:0 0 110px}
+/* верхняя полоса */
+.top{position:sticky;top:0;z-index:25;background:#063d30;border-bottom:2px solid var(--deep);padding:max(8px,env(safe-area-inset-top)) 14px 8px}
+.top .in{max-width:520px;margin:0 auto;display:flex;align-items:center;gap:8px}
+.mk{width:36px;height:36px;border-radius:50%;border:2px solid var(--deep);flex:none;display:block;background:#e53935}
+.logo{font-family:var(--head);font-weight:700;font-size:clamp(17px,5.6vw,22px);letter-spacing:.02em;color:#fff;line-height:1;white-space:nowrap}
+.logo small{display:block;font-family:var(--body);font-weight:600;font-size:10px;letter-spacing:.04em;color:var(--yellow);margin-top:2px}
+.pill{border:0;border-radius:999px;background:var(--yellow);color:var(--bg);font:inherit;font-weight:800;font-size:13px;letter-spacing:.03em;text-transform:uppercase;padding:0 16px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;box-shadow:0 3px 0 #b89a00}
+.pill:active{transform:translateY(2px);box-shadow:0 1px 0 #b89a00}
+.pill.ghost{background:transparent;color:#fff;border:2px solid #ffffff55;box-shadow:none}
+.top .pill{margin-left:auto;flex:none;white-space:nowrap}
+/* профиль */
+.prof{margin:12px 10px 0;background:#fff;border:3px solid var(--deep);border-radius:24px;box-shadow:0 6px 0 var(--deep);overflow:hidden}
+.pbody{padding:22px 16px 16px;text-align:center}
+.logo-ava{width:clamp(96px,30vw,128px);height:clamp(96px,30vw,128px);border-radius:50%;overflow:hidden;margin:0 auto;border:4px solid var(--yellow);outline:3px solid var(--deep);background:#e53935}
+.logo-ava img{width:100%;height:100%;object-fit:cover;display:block}
+.prof h1{margin:14px 0 0;font-family:var(--head);font-size:clamp(28px,9vw,36px);line-height:1;font-weight:700;letter-spacing:.01em;color:var(--bg)}
+.tagl{margin-top:6px;font-size:clamp(17px,5vw,20px);font-weight:800;color:var(--bg)}
+.from{margin-top:2px;font-size:12px;font-weight:700;color:var(--bg);opacity:.6}
+.badge{display:inline-flex;gap:6px;background:var(--bg);color:var(--yellow);border-radius:999px;padding:5px 14px;font-weight:800;font-size:12px;letter-spacing:.04em;text-transform:uppercase;margin-top:14px}
+.bio{margin:12px 0 0;font-size:15px;line-height:1.42;font-weight:600}
+.castrow{margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.castrow>span{font-size:12px;font-weight:800;opacity:.6}
+.cast{display:flex;justify-content:center;margin-left:6px}
+.cast .ava{width:36px;height:36px;border-width:2px;margin-left:-6px}
+.row{display:flex;gap:8px;margin-top:12px}
+.row .pill{flex:1;min-width:0;white-space:nowrap;padding:0 8px;font-size:clamp(11px,3.2vw,13px)}
+.row .pill.ghost{font-size:clamp(10px,2.9vw,12px)}
+/* истории: листаются пальцем, мышью и стрелками */
+.stwrap{position:relative;margin-top:12px}
+.stories{display:flex;gap:10px;overflow-x:auto;padding:6px 14px 8px;scrollbar-width:none;scroll-snap-type:x proximity;scroll-padding:0 14px;cursor:grab;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 14px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 14px),transparent 100%)}
+.stories::-webkit-scrollbar{display:none}
+.stories.drag{cursor:grabbing;scroll-snap-type:none}
+.st{flex:none;width:66px;text-align:center;color:#fff;font-size:11px;font-weight:700;background:none;border:0;padding:0;cursor:pointer;font-family:inherit;scroll-snap-align:start}
+.st .ring{width:62px;height:62px;margin:0 auto;border-radius:50%;padding:3px;background:conic-gradient(var(--yellow),var(--coral),var(--yellow));display:block}
+.st .ring span{display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:50%;background:var(--deep);border:2px solid var(--deep);font-family:var(--head);font-weight:700;font-size:15px;color:var(--yellow)}
+.st .ring img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:50% 20%;border:2px solid var(--deep);background:var(--bg2);display:block;pointer-events:none}
+.st em{display:block;margin-top:4px;font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stbtn{position:absolute;top:18px;width:36px;height:36px;border-radius:50%;border:2px solid var(--deep);background:var(--yellow);color:var(--bg);font:inherit;font-weight:800;font-size:22px;line-height:1;cursor:pointer;z-index:3;box-shadow:0 3px 0 #0006;display:flex;align-items:center;justify-content:center;padding:0}
+.stbtn.l{left:6px}.stbtn.r{right:6px}
+.stbtn[hidden]{display:none}
+.likers{display:flex;align-items:center;gap:8px;padding:2px 14px 6px;font-size:13px;font-weight:600;line-height:1.3}
+.likers .stack{display:flex;flex:none}
+.likers .stack .ava{width:22px;height:22px;border-width:2px;margin-left:-6px}
+.likers .stack .ava:first-child{margin-left:0}
+.likers b{font-weight:800}
+.ava.logo{background:#e53935}
+a.ava{text-decoration:none}
+a.hl{color:inherit;text-decoration:none}
+a.hl:hover{text-decoration:underline}
+/* аватарки */
+.ava{width:40px;height:40px;border-radius:50%;border:2px solid var(--deep);overflow:hidden;flex:none;display:block}
+.ava img,.ava svg{width:100%;height:100%;object-fit:cover;display:block}
+/* посты */
+.feed{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.post{background:var(--cream);border-block:1px solid #0b2a2230;overflow:hidden}
+.ph{display:flex;align-items:center;gap:10px;padding:8px 12px}
+.ph .ava{width:34px;height:34px;border:0;box-shadow:0 0 0 2px var(--coral),0 0 0 3px var(--cream)}
+.ph .more{margin-left:auto;font-size:20px;font-weight:800;letter-spacing:2px;line-height:1;opacity:.7}
+.ph>div{min-width:0}
+.ph b{font-weight:800;font-size:14px;display:block;line-height:1.15;color:var(--ink)}
+.ph small{display:block;font-size:12px;opacity:.65;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pin{margin-left:auto;flex:none;background:var(--yellow);border:2px solid var(--deep);border-radius:999px;padding:2px 8px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.cw{position:relative;background:var(--deep)}
+.car{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;scrollbar-width:none;cursor:grab;touch-action:pan-x pan-y}
+.car::-webkit-scrollbar{display:none}
+.car.drag{cursor:grabbing;scroll-snap-type:none;scroll-behavior:auto}
+.car.drag .sl .fg{pointer-events:none}
+.sl{flex:none;width:100%;scroll-snap-align:center;aspect-ratio:var(--ar,4/5);position:relative;overflow:hidden;background:var(--deep)}
+.sl[data-zoom]::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0a4a3a 0%,#116050 50%,#0a4a3a 100%);background-size:200% 100%;animation:shim 1.3s linear infinite}
+@keyframes shim{to{background-position:-200% 0}}
+.sl .fg{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block;cursor:zoom-in;-webkit-user-drag:none;user-select:none}
+.sl .bgb{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;opacity:.85}
+.sl .cnt{position:absolute;right:10px;top:10px;background:#03241cb3;color:#fff;font-weight:800;font-size:12px;border-radius:999px;padding:3px 10px;z-index:2}
+.sl .zoom{position:absolute;right:10px;bottom:10px;width:34px;height:34px;border-radius:50%;background:#03241cb3;color:#fff;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;z-index:2;pointer-events:none}
+.sl.proj::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0a4a3a 0%,#116050 50%,#0a4a3a 100%);background-size:200% 100%;animation:shim 1.3s linear infinite}
+.sl.proj .fg{cursor:default}
+.sl.proj .pj{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:46px 16px 16px;background:linear-gradient(transparent,#03241cf0 62%);display:flex;flex-direction:column;gap:4px}
+.sl.proj .pj b{font-family:var(--head);font-size:clamp(30px,10vw,44px);line-height:1;font-weight:700;color:var(--yellow);text-shadow:3px 3px 0 var(--deep)}
+.sl.proj .pj span{font-size:clamp(14px,4.2vw,17px);font-weight:700;color:#fff;line-height:1.25}
+.sl.big{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;background:var(--c,var(--bg2));padding:24px}
+.sl.big span{text-shadow:0 2px 0 var(--deep),0 0 14px #000a}
+.sl.big b{font-family:var(--head);font-size:clamp(64px,22vw,110px);line-height:1;font-weight:700;color:var(--yellow);text-shadow:4px 4px 0 var(--deep)}
+.sl.big span{font-size:clamp(16px,5vw,22px);font-weight:800;color:#fff;max-width:90%;line-height:1.2}
+.sl.duo{display:flex;align-items:flex-end;justify-content:center;gap:2%;background:linear-gradient(#0a4a3a,#063d30);padding:24px 10px 0}
+.sl.duo img{height:96%;max-width:49%;object-fit:contain}
+.heartpop{position:absolute;left:50%;top:50%;width:110px;height:110px;margin:-55px 0 0 -55px;z-index:5;pointer-events:none;opacity:0;fill:var(--coral);stroke:var(--deep);stroke-width:1.5}
+.heartpop.go{animation:hp .7s ease-out}
+@keyframes hp{0%{opacity:0;transform:scale(.4)}30%{opacity:1;transform:scale(1.15)}100%{opacity:0;transform:scale(1.4) translateY(-30px)}}
+.arr{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:2px solid var(--deep);background:var(--yellow);color:var(--bg);font:inherit;font-weight:800;font-size:26px;line-height:1;cursor:pointer;z-index:3;box-shadow:0 3px 0 #0006;display:flex;align-items:center;justify-content:center;padding:0}
+.arr.l{left:8px}.arr.r{right:8px}
+.arr:active{transform:translateY(-50%) scale(.92)}
+.arr[hidden]{display:none}
+.dots{display:flex;justify-content:center;align-items:center;gap:4px;flex:1}
+.dots i{cursor:pointer;width:6px;height:6px;border-radius:50%;background:#0b2a2233}
+.dots i.on{background:var(--coral)}
+.acts{display:flex;align-items:center;gap:0;padding:2px 6px 0}
+.ab{background:none;border:0;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;color:var(--ink)}
+.ab svg{width:26px;height:26px;fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.acts .sp{width:44px;flex:none}
+.cnum{margin-left:auto;font-size:13px;font-weight:700;opacity:.6}
+.lk{background:none;border:0;padding:6px;cursor:pointer;display:flex;align-items:center;gap:6px;font:inherit;font-weight:800;font-size:14px;color:var(--ink);min-width:44px;min-height:44px;justify-content:center;border-radius:12px}
+.lk svg{width:26px;height:26px;stroke:var(--ink);stroke-width:2;fill:none;transition:transform .15s}
+.lk.on svg{fill:var(--coral);stroke:var(--coral);animation:pop .3s}
+.acts .lk span{display:none}
+@keyframes pop{50%{transform:scale(1.35)}}
+.lk.small{min-width:30px;min-height:28px;font-size:11px;flex-direction:column;gap:0;padding:2px;color:#0b2a2299}
+.lk.small svg{width:15px;height:15px}
+.cap{padding:2px 12px 6px;font-size:14px;line-height:1.38}
+.cap b{font-weight:800;color:var(--bg)}
+.cm{padding:0 0 10px;display:flex;flex-direction:column}
+.cm .t{display:none}
+.c{display:grid;grid-template-columns:28px 1fr auto;column-gap:8px;align-items:start;padding:5px 12px}
+.c[hidden]{display:none}
+.c .ava{width:28px;height:28px;border-width:1.5px}
+.c .tx{min-width:0}
+.c .hd{display:inline;line-height:1.2}
+.c .hd b{font-weight:800;font-size:13.5px;color:var(--ink);margin-right:5px}
+.c .hn{display:none}
+.c .body{display:inline;font-size:13.5px;line-height:1.36;overflow-wrap:anywhere}
+.mn{color:#0a7a5a;font-weight:700}
+.showmore{align-self:flex-start;background:none;border:0;padding:6px 12px;min-height:34px;font:inherit;font-weight:600;font-size:13.5px;color:#0b2a2299;cursor:pointer}
+.end{color:#ffffffb0;text-align:center;font-size:13px;font-weight:600;padding:18px 20px 6px;line-height:1.4}
+/* нижняя кнопка */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:8px 12px max(12px,env(safe-area-inset-bottom));pointer-events:none;background:linear-gradient(transparent,#063d30cc 40%)}
+.dock .in{max-width:520px;margin:0 auto;pointer-events:auto}
+.dock .pill{width:100%;min-height:50px;font-size:clamp(13px,4vw,15px);box-shadow:0 4px 0 #b89a00,0 10px 22px #0008}
+.sheet{position:fixed;inset:0;z-index:40;background:#03241ccc;display:flex;align-items:flex-end;justify-content:center}
+.sheet[hidden]{display:none}
+.sheet .box{width:100%;max-width:480px;background:var(--cream);border:3px solid var(--deep);border-bottom:0;border-radius:24px 24px 0 0;padding:20px 16px max(18px,env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px;animation:up .25s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.box h2{margin:0;font-family:var(--head);font-size:26px;line-height:1.1;color:var(--bg);letter-spacing:.01em}
+.box p{margin:0;font-size:15px;line-height:1.45}
+.box code{display:block;background:#fff;border:2px dashed var(--bg);border-radius:12px;padding:10px 12px;font:inherit;font-weight:800;word-break:break-word}
+.box .row{margin-top:2px}
+.box .pill.ghost{color:var(--bg);border-color:var(--bg)}
+/* просмотр на весь экран */
+.lb{position:fixed;inset:0;z-index:60;background:#021a14f2;display:flex;align-items:center;justify-content:center;touch-action:none;user-select:none}
+.lbh{position:absolute;left:0;right:0;top:max(66px,calc(env(safe-area-inset-top) + 56px));text-align:center;color:#ffffffcc;font-size:13px;font-weight:600;pointer-events:none;transition:opacity .5s}
+.lb[hidden]{display:none}
+.lb img{max-width:100vw;max-height:100dvh;object-fit:contain;user-select:none;-webkit-user-drag:none;cursor:zoom-out;touch-action:none}
+.lb .x{position:absolute;top:max(12px,env(safe-area-inset-top));right:12px}
+.lb .n{position:absolute;top:max(18px,env(safe-area-inset-top));left:16px;color:#fff;font-weight:800;font-size:14px}
+.lb .cp{position:absolute;left:0;right:0;bottom:max(16px,env(safe-area-inset-bottom));text-align:center;color:#fff;font-size:14px;font-weight:600;padding:0 70px;text-shadow:0 1px 4px #000}
+.lb .arr{background:#fcd718}
+.lb .pill.x{min-width:44px;padding:0 14px}
+@media (min-width:521px){.post{border:1px solid #0b2a2230;border-radius:14px;margin:0 10px}}
+
+/* телефон: текст компактнее, как в Инстаграме */
+@media (max-width:640px){
+ .prof h1{font-size:clamp(24px,7.4vw,29px)}
+ .tagl{font-size:clamp(15px,4.4vw,17px)}
+ .from{font-size:11px}
+ .badge{font-size:11px;padding:4px 12px}
+ .bio{font-size:13.5px;line-height:1.4}
+ .castrow>span{font-size:11px}
+ .row .pill{font-size:12px;min-height:42px}
+ .st{font-size:10px}
+ .ph b{font-size:13.5px}
+ .ph small{font-size:11px}
+ .pin{font-size:9px}
+ .cap{font-size:13px;line-height:1.38;padding:2px 12px 6px}
+ .cnum{font-size:12px}
+ .lk{font-size:13px}
+ .likers{font-size:12px;padding:2px 12px 6px}
+ .cm .t{font-size:12px;padding:6px 12px 4px}
+ .c .hd b{font-size:13px}
+ .c .body{font-size:13px;line-height:1.36}
+ .lk.small{font-size:11px}
+ .showmore{font-size:13px;padding:6px 12px}
+ .sl.proj .pj b{font-size:clamp(26px,8.6vw,36px)}
+ .sl.proj .pj span{font-size:clamp(13px,3.8vw,15px)}
+ .sl.big b{font-size:clamp(52px,17vw,88px)}
+ .sl.big span{font-size:clamp(14px,4.2vw,18px)}
+ .end{font-size:12px}
+ .dock .pill{font-size:clamp(12px,3.6vw,14px);min-height:46px}
+ .pill{font-size:12px}
+}
+/* очень узкие экраны */
+@media (max-width:340px){.logo small{font-size:9px;letter-spacing:.02em}.top .pill{padding:0 12px;font-size:12px}.cap,.c .tx{font-size:14px}.cm{padding-inline:12px}}
+/* телефон в горизонтали: шапка и кнопка не едят экран */
+@media (max-height:520px){.top{position:static}.dock{position:static;background:none;padding:6px 12px 14px}.wrap{padding-bottom:12px}.sl{max-height:calc(100dvh - 24px)}}
+@media (prefers-reduced-motion:reduce){.sl[data-zoom]::before{animation:none}html{scroll-behavior:auto}.lk.on svg,.sheet .box,.heartpop.go{animation:none}.car{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="bgp" style="background-image:url(assets/cover_bg2.webp)"></div>
+<header class="top"><div class="in"><img class="mk" src="assets/logo.webp" alt="MR.HEROGEEK" width="36" height="36"><div class="logo">MR.HEROGEEK<small>live.create.share</small></div><button class="pill" data-open>Хочу в MAP</button></div></header>
+<div class="wrap">
+ <section class="prof">
+  <div class="pbody">
+   <div class="logo-ava"><img src="assets/logo.webp" alt="MR.HEROGEEK"></div>
+   <h1>MR.HEROGEEK</h1>
+   <div class="tagl">Создаём вселенные</div>
+   <div class="from">Студия из Красноярска</div>
+   <span class="badge">Ищем аниматора</span>
+   <p class="bio">Строим IP-империи. Рисуем героев и миры для них: каждый проект готов к физическому мерчу и 3D, с глубоким лором и растущим сообществом.</p>
+   <div class="castrow"><span>Подписчики · 7 героев</span><div id="cast" class="cast"></div></div>
+   <div class="row"><button class="pill" data-open>Хочу в MAP</button><a class="pill ghost" style="color:var(--bg);border-color:var(--bg)" href="#p0">Лента</a></div>
+  </div>
+ </section>
+ <div class="stwrap"><button class="stbtn l" id="stl" aria-label="Назад" hidden>‹</button><nav class="stories" id="stories"></nav><button class="stbtn r" id="str" aria-label="Дальше">›</button></div>
+ <main class="feed" id="feed"></main>
+ <div class="end"><b>лайф. криейт. шеар.</b><br>Герои взяли студию в свои руки: оживляйте, продавайте, зарабатывайте.<br>Дальше они сами. Но недолго.</div>
+</div>
+<div class="dock"><div class="in"><button class="pill" data-open>Оживить Mad &amp; Whoopy</button></div></div>
+<div class="sheet" id="sheet" hidden><div class="box">
+ <h2>MAP «Оживи Mad &amp; Whoopy»</h2>
+ <p>Нужны 2D-аниматоры. Честно: оплаты нет, все условия письменно. Пиши:</p>
+ <code id="contact">Telegram: t.me/mrherogeek</code>
+ <div class="row"><button class="pill ghost" id="copy">Скопировать</button><button class="pill" id="close">Закрыть</button></div>
+</div></div>
+<div class="lb" id="lb" hidden>
+ <span class="n" id="lbn"></span><button class="pill x" id="lbx" aria-label="Закрыть">✕</button>
+ <button class="arr l" id="lbl" aria-label="Назад">‹</button><img id="lbi" alt=""><button class="arr r" id="lbr" aria-label="Дальше">›</button>
+ <div class="lbh" id="lbh">Тапни или смахни вниз, чтобы закрыть</div>
+ <div class="cp" id="lbc"></div>
+</div>
+<script>
+"use strict";
+const CONTACT="Telegram: t.me/mrherogeek";
+const I=n=>`assets/${n}.webp`,T=n=>`assets/t_${n}.webp`,M=n=>`assets/m_${n}.webp`,B=n=>`assets/b_${n}.webp`;
+
+/* ===== ГЕРОИ (аккаунты в комментариях). Имена и характеры черновые, уточнить у Лены и Жени ===== */
+const CAST={
+ whoopy:{name:"whoopy",disp:"Whoopy",av:"av_whoopy",c:"#d1306f"},
+ mad:{name:"mad",disp:"Mad",av:"av_mad",c:"#5a3fc0"},
+ zee:{name:"zee",disp:"Zee",av:"av_zee",c:"#0a9a82"},
+ arni:{name:"arninator",disp:"Арни",av:"av_arni",c:"#d9631a"},
+ tk:{name:"tracer_kid",disp:"Tracer Kid",av:"av_tk",c:"#d96a00"},
+ bnd:{name:"bnd_bunny",disp:"BND Bunny",av:"av_bnd",c:"#3a4aa8"},
+ lemon:{name:"lemon",disp:"Lemon",av:"av_lemon",c:"#6a8a00"}
+};
+const HERO_SLUG={"whoopy": "whoopy", "mad": "mad", "zee": "zee", "arni": "arni", "tk": "tracer-kid", "bnd": "robin", "lemon": "lemon"};
+const avatarHTML=(k,cls="")=>{
+ const h=CAST[k];
+ return `<a class="ava ${cls}" href="heroes/${HERO_SLUG[k]}/" aria-label="${h.disp}"><img src="${I(h.av)}" alt="${h.disp}" decoding="async"></a>`;
+};
+
+/* ===== ЛАЙКИ ===== */
+/* Лайки героев: каждый пост и комментарий уже кто-то из героев лайкнул (внутри вселенной, стабильно для всех).
+   Лайк человека: один с одного браузера, хранится на устройстве. Общий счётчик людей требует сервера. */
+const HEROES=["whoopy","mad","zee","arni","tk","bnd","lemon"];
+const hash=s=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
+const LIKERS={};
+function likersFor(id,exclude){
+ const isPost=!id.includes("-c");
+ const n=isPost?3+hash(id)%5:hash(id)%4;
+ LIKERS[id]=HEROES.filter(h=>h!==exclude).sort((a,b)=>hash(id+a)-hash(id+b)).slice(0,n);
+ return LIKERS[id];
+}
+const LikeStore={
+ key:"mhg_likes_v1",mine:new Set(),
+ load(){try{this.mine=new Set(JSON.parse(localStorage.getItem(this.key)||"[]"))}catch(_){this.mine=new Set()}},
+ save(){try{localStorage.setItem(this.key,JSON.stringify([...this.mine]))}catch(_){}},
+ has(id){return this.mine.has(id)},
+ count(id){return (LIKERS[id]||[]).length+(this.has(id)?1:0)},
+ set(id,on){on?this.mine.add(id):this.mine.delete(id);this.save()},
+ toggle(id){this.set(id,!this.has(id));return this.has(id)}
+};
+LikeStore.load();
+
+/* ar: пропорция кадра. slides: имя картинки, {big,text,c} или "duo". Герои в комментариях ссылаются друг на друга через @ */
+const P=[
+ {id:"p0",date:"Закреплено · знакомьтесь",pin:1,ar:"4/5",slides:[
+   {proj:"Tracer Kid",text:"Паркур по крышам. Комикс, стикеры, футболки",img:"tk_cover"},
+   {proj:"BND",text:"Кролики против морковок. Печать и китайское издание",img:"bnd3"},
+   {proj:"Mad & Whoopy",text:"Мир, где все превращаются в еду",img:"k94"},
+   {proj:"Zee",text:"Оборотень-маскот. Фигурки и игрушки",img:"zee"},
+   {proj:"Лимончики",text:"Лимон-супергерой и кролики в худи",img:"o409"}],
+  cap:"<b>Привет, мы MR.HEROGEEK, студия из Красноярска.</b> Рисуем героев, из которых получаются комиксы, фигурки, персонажи и, если повезёт, мультики. Листай карусель: тут наши миры.<br><b>PS.</b> Всё вышло из-под контроля. Наши персы захватили аккаунт, и мы не знаем, что из этого выйдет. Заранее просим прощения. Осторожно: dangerous ⚠️😈",
+  cm:[["whoopy","АВТОРЫ ОСТАВИЛИ НАС С АККАУНТОМ!!! ЗАРПЛАТА В ЭТОЙ СТУДИИ: ПОНЧИК!!! НАРИСОВАННЫЙ!!! Я ЕГО ЧЕТЫРЕ ГОДА НЕ МОГУ СЪЕСТЬ!!! 🍩"],
+      ["zee","авторы, вы думаете, что вы нас придумали. мы вас тоже придумали. вы в блокноте. у нас. записаны под «утро, кофе, паника» 😈"],
+      ["arni","Пять миров, ни одного босса. Беру на себя. Оплата морковками. Хотя нет, морковки мне уже должны 😎"],
+      ["mad","Авторы вышли за кофе, мы захватили аккаунт. Это называется «рабочий процесс»."]]},
+ {id:"p2",date:"Tracer Kid · паркур",ar:"4/5",slides:["tk_cover","o860","tk25","tk_stick","tk30","k800"],
+  cap:"<b>Tracer Kid.</b> Самый быстрый курьёр МегаСити. За ним гонится банда, лифт сломан, до земли 23 этажа, а спасает его говорящий рюкзак. Комикс, стикерпак и футболки уже есть. Одного не хватает: чтобы он наконец побежал по-настоящему.",
+  cm:[["whoopy","У НЕГО ГОВОРЯЩИЙ РЮКЗАК!!! А У МЕНЯ ТОЛЬКО ПОНЧИК, И ТОТ МОЛЧИТ!!! ВИДИМО, ТОЖЕ БЕЗ ЗАРПЛАТЫ!!! 🍩"],
+      ["mad","@tracer_kid ты быстрый. Хорошо. Принеси мне шаурму. Я лежу."],
+      ["tk","@mad я быстрый и не твой курьер. Хотя курьер. Но не твой 😤"],
+      ["zee","я знаю, что ты побежишь. я уже на финише. стою там с позапрошлого вторника. принёс чай. чай остыл. я тоже 🫖😈"]]},
+ {id:"p3",date:"BND · Bunnies Not Dead",ar:"2/3",slides:["bnd3","bnd11","bnd1","bnd7","k794","k787"],
+  cap:"<b>BND, Bunnies Not Dead.</b> Школьник Робин нашёл чужие часы, покрутил и проснулся кроликом. Дальше хуже: местные морковки решили, что он их конкурент. Была ботва, а стала БРАТВА. Цифровая премьера 28 апреля 2024, потом печатный выпуск (28 страниц, soft-touch, внутри мини-комикс «Морковный сок»). Коллекционка «Арнинатор» вышла в 20 экземплярах, подписана всеми авторами.",
+  cm:[["arni","«Была ботва, а стала БРАТВА»! Моя реплика! Авторы не сказали «спасибо». Я им говорю: «спасибо» не морковка! Платите морковками! 🥕💢"],
+      ["bnd","@arninator тебе платят морковками"],
+      ["arni","@bnd_bunny а тебе чем платят, часами? Время деньги, значит, ты миллионер. А у меня морковки. Меняемся? 😤"],
+      ["zee","в первом выпуске я спрятан. найдёшь меня: выиграешь меня. не найдёшь: я найду тебя. твой холодильник уже мой 😈"]]},
+ {id:"p4",date:"Mad & Whoopy · с чего всё началось",ar:"1/1",slides:["menu","wmenu","k94","k58","k377","hallo","twin"],
+  cap:"<b>Mad & Whoopy.</b> Почти невыдуманные истории выдуманных кроликов. Mad ленивый и безмятежный. Whoopy громкая и вечно занята. Оба превращаются в еду и поклоняются 3D, будучи плоскими. С них началась вся студия. Листай: Mad menu, Whoopy menu, космос, ниндзя и диско.",
+  cm:[["mad","«Ленивый и безмятежный». Это не диагноз. Это бизнес-модель."],
+      ["whoopy","«ВЕЧНО ЗАНЯТА»!!! ДА!!! Я ЗАНЯТА ТЕМ, ЧТОБЫ БЫТЬ ГРОМКОЙ!!! ЭТО РАБОТА!!! ЗА НЕЁ НЕ ПЛАТЯТ!!! КАК И ВСЕМ ЗДЕСЬ!!! 🍩"],
+      ["arni","«Поклоняются 3D, будучи плоскими». Мы бы поклонялись деньгам, но они у нас тоже плоские. Нулевые 😭"],
+      ["zee","попробовал меню. страница 2 вкуснее страницы 3. страница 7 попробовала меня в ответ. 2 из 5 😈"]]},
+ {id:"p5",date:"Zee · оборотень",ar:"4/5",slides:["zee","k115","k678","k679","k685","k657","k661"],
+  cap:"<b>Zee (Зи).</b> Возраст: НЕИЗВЕСТНО. Способности: [ДАННЫЕ УДАЛЕНЫ]. Шарообразный, зубастый, с шипами, длинным языком и пушистым хвостом. Полиморф: может быть кем угодно, но чаще всего зубами. Есть фигурки 10 см в пяти цветах, футболки и зубастый транспорт.",
+  cm:[["zee","«Способности: удалены». Авторы, вы кого пытаетесь обмануть? Вы просто их не придумали!!!!"],
+      ["mad","@zee точно, ты прав, чувак. Они и возраст тоже не придумали. Но сейчас они кофе попьют, может, что-то появится в их голове."],
+      ["bnd","Мне 14, и я только что понял, что авторы пишут подписи к постам так же, как я пишу сочинение в восьмом классе. В последнюю ночь 😰"]]},
+ {id:"p6",date:"Лимончики · Bunny Lemon",ar:"1/1",slides:["lzc","lm90","lm85","lm100","lz01","lz02","lz03","lz04","lz05","lz06","lz07","lz08","lz09","lz14"],
+  cap:"<b>Лимончики.</b> Кролики в худи и с лимонами: коллекция Bunny Lemon и куча стикеров-мемов. Кислый, «сигма», Kiwi и ещё мультивселенная. Листай: у каждого лимона свой характер, и все с претензиями.",
+  cm:[["lemon","Мне сказали: будешь звездой. Нарисовали на стикере. Платят тоже стикерами. Я кислый от обиды 🍋"],
+      ["arni","Лимон с бицепсами и надписью SIGMA. Это не сигма. Это витамин C с комплексами 💪"],
+      ["lemon","@arninator ты в два измерения нарисован. Это не комплекс, это бюджет 🍋"],
+      ["zee","пятый стикер слева это не лимон. это я. я тоже жёлтый, когда нервничаю 😈"]]},
+ {id:"p7",date:"2022 — 2026 · четыре года движа",ar:"4/5",slides:[{big:"4 года",text:"Не сидим на месте",c:"#0a4a3a",bg:"k656"},"k704","k693","k342","k548","k14","k60"],
+  cap:"<b>Четыре года мы просто делаем вещи.</b> С 2022-го: первый стикерпак и кожаные брелоки на SuperCon, потом футболки, духи, фигурки, настолка «Как дела, Боб?», комиксы и 3D-тесты. Ядро студии два человека, остальное делают герои, которые не хотят работать. Куда донатить? Пока никуда. Думаем.",
+  cm:[["lemon","Футболки продают, духи продают, настолку продают. А лимона одеть не могут. Кто тут у вас кислый, а? 😳🍋"],
+      ["bnd","«Куда донатить? Пока никуда». МНЕ НАЛИЧНЫМИ РЕБЯТА!!! 🍫"],
+      ["arni","Настолка «Как дела, Боб?». Боб, как дела? Молчит. Боб нарисованный. Боб бумажный. БОООБ 🃏"],
+      ["zee","духи пахнут как я. я там не бывал. но пахнет. мной и немножко тобой 😈"]]},
+ {id:"p1",date:"Что дальше · Китай",ar:"2/3",slides:["duo",{big:"MAP",text:"Оживи Mad & Whoopy. Анимация нужна для Китая",c:"#0a4a3a",bg:"k602"},"o301","o305","o306"],
+  cap:"<b>Мы идём в Китай, а в Китае всё движется. Даже лапша в рекламе.</b> А наши герои пока только нарисованы. Поэтому запускаем MAP: ищем 2D-аниматоров, которые хотят оживить любого нашего героя и любую вселенную, которая зацепит. Гонорар пока в виде опыта, свободы и вечной благодарности персонажей. Условия письменно. Хочешь попробовать? Жми «Хочу в MAP».",
+  cm:[["whoopy","МЫ ИДЁМ В КИТАЙ!!! ТАМ ЛЮБЯТ РОЛИКИ!!! А НАС ЧЕТЫРЕ ГОДА РИСУЮТ И ОБЕЩАЮТ ДВИЖЕНИЕ!!! У МЕНЯ ЗАТЕКЛА ЛАПА В ПОЗЕ ПОНЧИКА!!! 🍩"],
+      ["arni","Миллиард зрителей, и все смотрят на мой нарисованный бицепс. Платите хотя бы за просмотр. Морковками 💪😎"],
+      ["bnd","«Гонорар: вечная благодарность». Мне 14, я не против. Но объясните маме, почему я «работаю за благодарность» 😰"],
+      ["zee","аниматор получит: 1) благодарность 2) меня в шкафу 3) вопрос «а почему он дышит». третье бесплатно 😈"]]}
+];
+const ST=[["p0","Знакомство","logo"],["p2","Tracer Kid","tk25"],["p3","BND","bnd11"],["p4","Mad&Whoopy","k94"],["p5","Zee","k678"],["p6","Лимоны","lz01"],["p7","Движ","k704"],["p1","Китай","o301"]];
+const SHOW=2;
+const $=s=>document.querySelector(s);
+const heartSVG=`<svg viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.8-8 11-8 11Z" stroke-linejoin="round"/></svg>`;
+const mention=t=>t.replace(/@(\w+)/g,'<span class="mn">@$1</span>');
+function imgs(p){return p.slides.filter(s=>typeof s==="string"&&s!=="duo")}
+function slide(p,s,k,total){
+ if(typeof s==="object"&&s.proj)return `<div class="sl proj"><i class="bgb" style="background-image:url(${T(s.img)})"></i><img class="fg" data-src="${I(s.img)}" alt="${s.proj}" draggable="false" decoding="async"><div class="pj"><b>${s.proj}</b><span>${s.text}</span></div><span class="cnt">${k+1}/${total}</span></div>`;
+ if(s==="duo")return `<div class="sl duo"><img src="${I("whoopy_3")}" alt="Whoopy"><img src="${I("mad_2")}" alt="Mad"></div>`;
+ if(typeof s==="object"){const bg=s.bg?`;background:linear-gradient(rgba(3,36,28,.66),rgba(3,36,28,.5)),url(${M(s.bg)}) center/cover`:"";return `<div class="sl big" style="--c:${s.c}${bg}"><b>${s.big}</b><span>${s.text}</span></div>`}
+ return `<div class="sl" data-zoom="${p.id}:${imgs(p).indexOf(s)}"><i class="bgb" style="background-image:url(${T(s)})"></i><img class="fg" data-src="${I(s)}" alt="" draggable="false" decoding="async"><span class="cnt">${k+1}/${total}</span><span class="zoom">⤢</span></div>`;
+}
+function likeBtn(id,cls){
+ const on=LikeStore.has(id),n=LikeStore.count(id);
+ return `<button class="lk ${cls||""} ${on?"on":""}" data-like="${id}" aria-pressed="${on}" aria-label="Нравится">${heartSVG}<span>${n?n:""}</span></button>`;
+}
+function likersLine(id){
+ const l=LIKERS[id],mine=LikeStore.has(id),total=l.length+(mine?1:0);
+ const names=(mine?["вам"]:[]).concat(l.slice(0,2).map(k=>`<b>${CAST[k].name}</b>`));
+ const shown=names.length,rest=Math.max(0,total-shown);
+ return `<div class="stack">${l.slice(0,3).map(k=>avatarHTML(k)).join("")}</div><span>Нравится ${names.join(", ")}${rest?` и ещё <b>${rest}</b>`:""}</span>`;
+}
+function commentHTML(pid,k,[who,text],hidden){
+ const id=`${pid}-c${k}`,h=CAST[who];
+ likersFor(id,who);
+ return `<div class="c" ${hidden?"hidden data-more":""}>${avatarHTML(who)}<div class="tx"><div class="hd"><b><a class="hl" href="heroes/${HERO_SLUG[who]}/">${h.disp}</a></b><span class="hn">@${h.name}</span></div><div class="body">${mention(text)}</div></div>${likeBtn(id,"small")}</div>`;
+}
+const studioAva=()=>`<div class="ava logo"><img src="${I("logo")}" alt="MR.HEROGEEK"></div>`;
+function postHTML(p){
+ const extra=Math.max(0,p.cm.length-SHOW),n=p.slides.length;
+ likersFor(p.id);
+ return `<article class="post" id="${p.id}" style="--ar:${p.ar}">
+  <div class="ph">${studioAva()}<div><b>mrherogeek</b><small>${p.date}</small></div>${p.pin?'<span class="pin">закреплено</span>':'<span class="more">···</span>'}</div>
+ <div class="cw"><div class="car">${p.slides.map((s,k)=>slide(p,s,k,n)).join("")}</div><svg class="heartpop" viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.8-8 11-8 11Z" stroke-linejoin="round"/></svg>${n>1?'<button class="arr l" aria-label="Назад" hidden>‹</button><button class="arr r" aria-label="Дальше">›</button>':""}</div>
+ <div class="acts">${likeBtn(p.id,"big")}<button class="ab" data-cm="${p.id}" aria-label="Комментарии"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 20.5l1.6-5A8.5 8.5 0 1 1 21 11.5Z"/></svg></button><button class="ab" data-share aria-label="Поделиться"><svg viewBox="0 0 24 24"><path d="M22 3 2 10.5l7.5 3L12.5 21 22 3ZM9.5 13.5 22 3"/></svg></button>${n>1?`<div class="dots">${p.slides.map((_,k)=>`<i class="${k?"":"on"}"></i>`).join("")}</div><span class="sp"></span><span class="sp"></span>`:""}</div>
+ <div class="likers" data-likers="${p.id}">${likersLine(p.id)}</div>
+ <div class="cap">${p.cap.replace(/^<b>(.*?)<\/b>/,"<b>mrherogeek</b> $1")}</div>
+ <div class="cm">${p.cm.map((c,k)=>commentHTML(p.id,k,c,k>=SHOW)).join("")}${extra?`<button class="showmore" data-more="${p.id}">Смотреть все комментарии (${p.cm.length})</button>`:""}</div>
+</article>`;
+}
+$("#feed").innerHTML=P.map(postHTML).join("");
+$("#cast").innerHTML=Object.keys(CAST).map(k=>avatarHTML(k)).join("");
+$("#stories").innerHTML=ST.map(([id,t,im])=>`<button class="st" data-go="${id}"><span class="ring">${im==="-"?`<span>${t}</span>`:`<img src="${T(im)}" alt="" decoding="async">`}</span><em>${t}</em></button>`).join("");
+
+/* ===== просмотр на весь экран ===== */
+const LB={list:[],i:0,post:null,
+ open(pid,i){this.post=P.find(p=>p.id===pid);this.list=imgs(this.post);this.i=i;this.show();$("#lb").hidden=false;document.body.style.overflow="hidden";const h=$("#lbh");h.style.opacity=1;clearTimeout(this.ht);this.ht=setTimeout(()=>{h.style.opacity=0},2600)},
+ show(){const n=this.list.length;{const im=$("#lbi");im.style.transition="none";im.style.transform="";im.style.opacity=""}$("#lbi").src=I(this.list[this.i]);$("#lbn").textContent=`${this.i+1} / ${n}`;$("#lbc").textContent=this.post.cap.replace(/<[^>]+>/g,"");$("#lbl").hidden=this.i<=0;$("#lbr").hidden=this.i>=n-1},
+ go(d){const n=this.list.length;this.i=Math.max(0,Math.min(n-1,this.i+d));this.show()},
+ close(){const im=$("#lbi");$("#lb").hidden=true;document.body.style.overflow="";im.style.transition="none";im.style.transform="";im.style.opacity=""}
+};
+$("#lbx").onclick=e=>{e.stopPropagation();LB.close()};
+$("#lbl").onclick=e=>{e.stopPropagation();LB.go(-1)};$("#lbr").onclick=e=>{e.stopPropagation();LB.go(1)};
+addEventListener("keydown",e=>{if($("#lb").hidden)return;if(e.key==="Escape")LB.close();if(e.key==="ArrowRight")LB.go(1);if(e.key==="ArrowLeft")LB.go(-1)});
+/* тап по картинке или фону закрывает; свайп вниз или вверх закрывает; свайп влево и вправо листает */
+(function(){
+ const lb=$("#lb"),im=$("#lbi");let sx=0,sy=0,dx=0,dy=0,down=false,moved=false;
+ const back=()=>{im.style.transition="transform .2s,opacity .2s";im.style.transform="";im.style.opacity=""};
+ lb.addEventListener("pointerdown",e=>{if(e.target.closest("button"))return;down=true;moved=false;sx=e.clientX;sy=e.clientY;dx=dy=0;im.style.transition="none"});
+ lb.addEventListener("pointermove",e=>{
+  if(!down)return;dx=e.clientX-sx;dy=e.clientY-sy;
+  if(Math.abs(dx)>8||Math.abs(dy)>8)moved=true;if(!moved)return;
+  if(Math.abs(dy)>Math.abs(dx)){im.style.transform=`translateY(${dy}px) scale(${1-Math.min(Math.abs(dy),300)/1500})`;im.style.opacity=1-Math.min(Math.abs(dy)/350,.7)}
+  else im.style.transform=`translateX(${dx}px)`;
+ });
+ const end=()=>{
+  if(!down)return;down=false;
+  if(!moved){LB.close();return}
+  if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>90){LB.close();return}
+  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>60){back();LB.go(dx<0?1:-1);return}
+  back();
+ };
+ lb.addEventListener("pointerup",end);
+ lb.addEventListener("pointercancel",()=>{down=false;back()});
+})();
+
+/* ===== клики ===== */
+function setLike(btn,on){btn.classList.toggle("on",on);btn.setAttribute("aria-pressed",on);const id=btn.dataset.like,n=LikeStore.count(id);btn.querySelector("span").textContent=n?n:"";const L=document.querySelector(`[data-likers="${id}"]`);if(L)L.innerHTML=likersLine(id)}
+document.addEventListener("click",e=>{
+ const g=e.target.closest("[data-go]");if(g)document.getElementById(g.dataset.go).scrollIntoView({behavior:"smooth",block:"start"});
+ const l=e.target.closest("[data-like]");
+ if(l){LikeStore.toggle(l.dataset.like);setLike(l,LikeStore.has(l.dataset.like))}
+ const m=e.target.closest(".showmore");
+ if(m){const post=document.getElementById(m.dataset.more),hid=post.querySelectorAll(".c[data-more]"),open=m.dataset.state==="1";
+  hid.forEach(c=>c.hidden=open);m.dataset.state=open?"0":"1";m.textContent=open?`Смотреть все комментарии (${post.querySelectorAll(".c").length})`:"Скрыть комментарии"}
+ const cb=e.target.closest("[data-cm]");
+ if(cb){const mm=document.getElementById(cb.dataset.cm).querySelector(".showmore");if(mm&&mm.dataset.state!=="1")mm.click()}
+ if(e.target.closest("[data-share]")){const u=location.href.split("#")[0];if(navigator.share)navigator.share({title:"MR.HEROGEEK",url:u}).catch(()=>{});else try{navigator.clipboard.writeText(u)}catch(_){}}
+ const z=e.target.closest("[data-zoom]");
+ if(z&&!document.querySelector(".car.drag")){const [pid,i]=z.dataset.zoom.split(":");LB.open(pid,+i)}
+ if(e.target.closest("[data-open]"))$("#sheet").hidden=false;
+ if(e.target.id==="close"||e.target.id==="sheet")$("#sheet").hidden=true;
+ if(e.target.id==="copy"){const b=e.target;function sel(){const r=document.createRange();r.selectNodeContents($("#contact"));const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Выделено, скопируй"}try{navigator.clipboard.writeText(CONTACT).then(()=>b.textContent="Скопировано",sel)}catch(_){sel()}}
+});
+/* двойной тап по картинке = лайк посту */
+document.addEventListener("dblclick",e=>{
+ const cw=e.target.closest(".cw");if(!cw)return;
+ const post=cw.closest(".post"),btn=post.querySelector(".acts .lk");
+ if(!LikeStore.has(btn.dataset.like)){LikeStore.set(btn.dataset.like,true);setLike(btn,true)}
+ const h=cw.querySelector(".heartpop");h.classList.remove("go");void h.getBoundingClientRect();h.classList.add("go");
+ if(!$("#lb").hidden)return;
+});
+
+/* ===== карусели ===== */
+document.querySelectorAll(".cw").forEach(w=>{
+ const c=w.querySelector(".car"),dots=[...w.parentElement.querySelectorAll(".dots i")],L=w.querySelector(".arr.l"),R=w.querySelector(".arr.r");
+ const n=c.children.length;
+ const idx=()=>Math.round(c.scrollLeft/c.clientWidth);
+ const upd=()=>{const k=idx();dots.forEach((x,j)=>x.classList.toggle("on",j===k));if(L){L.hidden=k<=0;R.hidden=k>=n-1}};
+ const to=k=>c.scrollTo({left:Math.max(0,Math.min(n-1,k))*c.clientWidth,behavior:"smooth"});
+ c.addEventListener("scroll",upd,{passive:true});
+ if(L){L.onclick=()=>to(idx()-1);R.onclick=()=>to(idx()+1)}
+ dots.forEach((d,j)=>d.onclick=()=>to(j));
+ let down=false,sx=0,sl=0,moved=false;
+ c.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse")return;down=true;moved=false;sx=e.clientX;sl=c.scrollLeft});
+ addEventListener("pointermove",e=>{if(!down)return;const d=e.clientX-sx;if(Math.abs(d)>4){moved=true;c.classList.add("drag")}if(moved)c.scrollLeft=sl-d});
+ addEventListener("pointerup",()=>{if(!down)return;down=false;if(moved){c.classList.remove("drag");to(idx())}});
+ upd();
+});
+
+/* ===== истории: стрелки и перетаскивание мышью ===== */
+(function(){
+ const st=$("#stories"),bl=$("#stl"),br=$("#str");
+ const upd=()=>{bl.hidden=st.scrollLeft<8;br.hidden=st.scrollLeft+st.clientWidth>=st.scrollWidth-8};
+ st.addEventListener("scroll",upd,{passive:true});addEventListener("resize",upd);
+ bl.onclick=()=>st.scrollBy({left:-st.clientWidth*.8,behavior:"smooth"});
+ br.onclick=()=>st.scrollBy({left:st.clientWidth*.8,behavior:"smooth"});
+ let down=false,sx=0,sl=0,moved=false;
+ st.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse")return;down=true;moved=false;sx=e.clientX;sl=st.scrollLeft});
+ addEventListener("pointermove",e=>{if(!down)return;const d=e.clientX-sx;if(Math.abs(d)>4){moved=true;st.classList.add("drag")}if(moved)st.scrollLeft=sl-d});
+ addEventListener("pointerup",()=>{if(!down)return;down=false;st.classList.remove("drag");if(moved)setTimeout(()=>{moved=false},0)});
+ st.addEventListener("click",e=>{if(moved){e.stopPropagation();e.preventDefault()}},true);
+ st.addEventListener("wheel",e=>{if(Math.abs(e.deltaY)>Math.abs(e.deltaX)&&st.scrollWidth>st.clientWidth){const max=st.scrollWidth-st.clientWidth;const nx=st.scrollLeft+e.deltaY;if((e.deltaY>0&&st.scrollLeft<max)||(e.deltaY<0&&st.scrollLeft>0)){e.preventDefault();st.scrollLeft=nx}}},{passive:false});
+ upd();
+})();
+
+/* ===== загрузка картинок по мере приближения (надёжнее нативного lazy на телефонах) ===== */
+function loadPost(post){
+ if(post.dataset.loaded)return;post.dataset.loaded="1";
+ post.querySelectorAll(".bgimg[data-bg]").forEach(d=>{d.style.backgroundImage=`url(${d.dataset.bg})`});
+ post.querySelectorAll("img.fg[data-src]").forEach(im=>{
+  let tries=0;
+  im.onerror=()=>{if(tries++<2)setTimeout(()=>{im.src=im.dataset.src+"?r="+tries},700*tries)};
+  im.src=im.dataset.src;
+ });
+}
+(function(){
+ const posts=[...document.querySelectorAll(".post")];
+ if("IntersectionObserver" in window){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){loadPost(e.target);io.unobserve(e.target)}}),{rootMargin:"900px 0px"});
+  posts.forEach(p=>io.observe(p));
+ }else posts.forEach(loadPost);
+ posts.slice(0,2).forEach(loadPost);
+ /* подстраховка: если наблюдатель не сработал, догружаем посты по очереди сами */
+ addEventListener("scroll",()=>{const h=innerHeight;posts.forEach(p=>{const r=p.getBoundingClientRect();if(r.top<h*2.5&&r.bottom>-h)loadPost(p)})},{passive:true});
+ setTimeout(()=>posts.forEach((p,i)=>setTimeout(()=>loadPost(p),i*350)),2500);
+ document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){const p=document.getElementById(g.dataset.go);if(p)loadPost(p)}},true);
+})();
+</script>
+</body>
+</html>

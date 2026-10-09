@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tracer Kid · MR.HEROGEEK</title>
+<meta name="description" content="Городской экшн с паркуром и юмором без цензуры. Курьёр, за которым гонится банда. Лифт сломан, до земли 23 этажа, а спасает его говорящий рюкзак. Коми">
+<meta property="og:title" content="Tracer Kid · MR.HEROGEEK">
+<meta property="og:description" content="Городской экшн с паркуром и юмором без цензуры. Курьёр, за которым гонится банда. Лифт сломан, до земли 23 этажа, а спасает его говорящий рюкзак. Коми">
+<meta property="og:image" content="https://feed.mrherogeek.com/assets/av_tk.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;600;800&family=Oswald:wght@500;700&display=swap">
+<style>
+
+/* Палитра и шрифты взяты с mrherogeek.com: глубокий зелёный, жёлтый, кремовый, коралловый; Oswald для заголовков */
+:root{color-scheme:dark;--bg:#063d30;--bg2:#0a4a3a;--deep:#03241c;--yellow:#fcd718;--coral:#ff8562;--cream:#fffef4;--ink:#0b2a22;--soft:#e9f0e4;
+ --head:"Oswald","Arial Narrow",Arial,sans-serif;--body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;scroll-padding-top:60px}
+html{background:var(--bg)}
+body{margin:0;background:transparent;color:var(--ink);font-family:var(--body)}
+.bgp{position:fixed;inset:0;z-index:-1;pointer-events:none;background-color:#08392d;background-repeat:no-repeat;background-position:left top;background-size:cover}
+.wrap{max-width:520px;margin:0 auto;padding:0 0 110px}
+/* верхняя полоса */
+.top{position:sticky;top:0;z-index:25;background:#063d30;border-bottom:2px solid var(--deep);padding:max(8px,env(safe-area-inset-top)) 14px 8px}
+.top .in{max-width:520px;margin:0 auto;display:flex;align-items:center;gap:8px}
+.mk{width:36px;height:36px;border-radius:50%;border:2px solid var(--deep);flex:none;display:block;background:#e53935}
+.logo{font-family:var(--head);font-weight:700;font-size:clamp(17px,5.6vw,22px);letter-spacing:.02em;color:#fff;line-height:1;white-space:nowrap}
+.logo small{display:block;font-family:var(--body);font-weight:600;font-size:10px;letter-spacing:.04em;color:var(--yellow);margin-top:2px}
+.pill{border:0;border-radius:999px;background:var(--yellow);color:var(--bg);font:inherit;font-weight:800;font-size:13px;letter-spacing:.03em;text-transform:uppercase;padding:0 16px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;box-shadow:0 3px 0 #b89a00}
+.pill:active{transform:translateY(2px);box-shadow:0 1px 0 #b89a00}
+.pill.ghost{background:transparent;color:#fff;border:2px solid #ffffff55;box-shadow:none}
+.top .pill{margin-left:auto;flex:none;white-space:nowrap}
+/* профиль */
+.prof{margin:12px 10px 0;background:#fff;border:3px solid var(--deep);border-radius:24px;box-shadow:0 6px 0 var(--deep);overflow:hidden}
+.pbody{padding:22px 16px 16px;text-align:center}
+.logo-ava{width:clamp(96px,30vw,128px);height:clamp(96px,30vw,128px);border-radius:50%;overflow:hidden;margin:0 auto;border:4px solid var(--yellow);outline:3px solid var(--deep);background:#e53935}
+.logo-ava img{width:100%;height:100%;object-fit:cover;display:block}
+.prof h1{margin:14px 0 0;font-family:var(--head);font-size:clamp(28px,9vw,36px);line-height:1;font-weight:700;letter-spacing:.01em;color:var(--bg)}
+.tagl{margin-top:6px;font-size:clamp(17px,5vw,20px);font-weight:800;color:var(--bg)}
+.from{margin-top:2px;font-size:12px;font-weight:700;color:var(--bg);opacity:.6}
+.badge{display:inline-flex;gap:6px;background:var(--bg);color:var(--yellow);border-radius:999px;padding:5px 14px;font-weight:800;font-size:12px;letter-spacing:.04em;text-transform:uppercase;margin-top:14px}
+.bio{margin:12px 0 0;font-size:15px;line-height:1.42;font-weight:600}
+.castrow{margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.castrow>span{font-size:12px;font-weight:800;opacity:.6}
+.cast{display:flex;justify-content:center;margin-left:6px}
+.cast .ava{width:36px;height:36px;border-width:2px;margin-left:-6px}
+.row{display:flex;gap:8px;margin-top:12px}
+.row .pill{flex:1;min-width:0;white-space:nowrap;padding:0 8px;font-size:clamp(11px,3.2vw,13px)}
+.row .pill.ghost{font-size:clamp(10px,2.9vw,12px)}
+
+.ava{width:40px;height:40px;border-radius:50%;border:2px solid var(--deep);overflow:hidden;flex:none;display:block}
+.ava img{width:100%;height:100%;object-fit:cover;display:block}
+.hwrap{max-width:560px;margin:0 auto;padding:0 0 60px}
+.hcard{margin:12px 10px 0;background:#fff;border:3px solid var(--deep);border-radius:24px;box-shadow:0 6px 0 var(--deep);overflow:hidden}
+.hbody{padding:22px 16px 18px;text-align:center}
+.hava{width:clamp(110px,34vw,150px);height:clamp(110px,34vw,150px);border-radius:50%;overflow:hidden;margin:0 auto;border:4px solid var(--yellow);outline:3px solid var(--deep);background:var(--bg2)}
+.hava img{width:100%;height:100%;object-fit:cover;display:block}
+.hbody h1{margin:14px 0 0;font-family:var(--head);font-size:clamp(30px,9vw,40px);line-height:1;color:var(--bg)}
+.hhandle{margin-top:4px;font-size:14px;font-weight:700;color:#0b2a2299}
+.htag{margin-top:8px;font-size:clamp(16px,4.6vw,19px);font-weight:800;color:var(--bg)}
+.hbio{margin:10px 0 0;font-size:14px;line-height:1.45}
+.hfacts{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:12px}
+.hfacts span{background:var(--soft);border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--bg)}
+.hrow{display:flex;gap:8px;margin-top:14px}
+.hrow .pill{flex:1;min-width:0;white-space:nowrap;font-size:clamp(11px,3.2vw,13px);padding:0 8px}
+.sec{margin:18px 12px 0;color:#fff}
+.sec h2{font-family:var(--head);font-size:22px;margin:0 0 10px;letter-spacing:.02em;color:var(--yellow)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;border-radius:14px;overflow:hidden}
+.grid a{aspect-ratio:1;display:block;background:var(--deep)}
+.grid img{width:100%;height:100%;object-fit:cover;display:block}
+.q{background:var(--cream);color:var(--ink);border-radius:16px;padding:12px 14px;margin-bottom:10px;font-size:14px;line-height:1.4;border:2px solid var(--deep)}
+.cast2{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;padding:6px 0}
+.cast2 a{text-align:center;color:#fff;text-decoration:none;font-size:11px;font-weight:700;width:60px}
+.cast2 .ava{width:54px;height:54px;margin:0 auto 4px;border-width:3px}
+.cast2 span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.back{display:inline-block;margin:14px 12px 0;color:#fff;font-weight:800;text-decoration:none}
+@media (max-width:640px){.hbio{font-size:13.5px}.q{font-size:13.5px}}
+
+</style>
+</head>
+<body>
+<div class="bgp" style="background-image:url(../../assets/cover_bg2.webp)"></div>
+<header class="top"><div class="in"><a href="../../" style="display:flex;align-items:center;gap:8px;text-decoration:none"><img class="mk" src="../../assets/logo.webp" alt="MR.HEROGEEK" width="36" height="36"><div class="logo">MR.HEROGEEK<small>live.create.share</small></div></a><a class="pill" href="../../">В ленту</a></div></header>
+<div class="hwrap">
+ <section class="hcard"><div class="hbody">
+  <div class="hava"><img src="../../assets/av_tk.webp" alt="Tracer Kid"></div>
+  <h1>Tracer Kid</h1>
+  <div class="hhandle">@tracer_kid</div>
+  <div class="htag">Самый быстрый курьёр МегаСити</div>
+  <p class="hbio">Городской экшн с паркуром и юмором без цензуры. Курьёр, за которым гонится банда. Лифт сломан, до земли 23 этажа, а спасает его говорящий рюкзак. Комикс, стикерпак и футболки уже существуют.</p>
+  <div class="hfacts"><span>Мир: Tracer Kid</span><span>Город: МегаСити</span><span>Любит: крыши, голуби, скорость</span></div>
+  <div class="hrow"><a class="pill" href="../../">Смотреть ленту</a><a class="pill ghost" style="color:var(--bg);border-color:var(--bg)" href="../../#p0">Все герои</a></div>
+ </div></section>
+ <section class="sec"><h2>Из его мира</h2><div class="grid"><a href="../../assets/tk_cover.webp" target="_blank" rel="noopener"><img src="../../assets/t_tk_cover.webp" alt="" loading="lazy"></a><a href="../../assets/o860.webp" target="_blank" rel="noopener"><img src="../../assets/t_o860.webp" alt="" loading="lazy"></a><a href="../../assets/tk25.webp" target="_blank" rel="noopener"><img src="../../assets/t_tk25.webp" alt="" loading="lazy"></a><a href="../../assets/tk_stick.webp" target="_blank" rel="noopener"><img src="../../assets/t_tk_stick.webp" alt="" loading="lazy"></a><a href="../../assets/tk30.webp" target="_blank" rel="noopener"><img src="../../assets/t_tk30.webp" alt="" loading="lazy"></a><a href="../../assets/k800.webp" target="_blank" rel="noopener"><img src="../../assets/t_k800.webp" alt="" loading="lazy"></a></div></section>
+ <section class="sec"><h2>Что он пишет</h2><div class="q">@mad я быстрый и не твой курьер. Хотя курьер. Но не твой 😤</div></section>
+ <section class="sec"><h2>Другие герои</h2><div class="cast2"><a href="../mad/"><div class="ava"><img src="../../assets/av_mad.webp" alt=""></div><span>Mad</span></a><a href="../whoopy/"><div class="ava"><img src="../../assets/av_whoopy.webp" alt=""></div><span>Whoopy</span></a><a href="../zee/"><div class="ava"><img src="../../assets/av_zee.webp" alt=""></div><span>Zee</span></a><a href="../arni/"><div class="ava"><img src="../../assets/av_arni.webp" alt=""></div><span>Арни</span></a><a href="../robin/"><div class="ava"><img src="../../assets/av_bnd.webp" alt=""></div><span>BND Bunny</span></a><a href="../lemon/"><div class="ava"><img src="../../assets/av_lemon.webp" alt=""></div><span>Lemon</span></a></div></section>
+ <a class="back" href="../../">← Назад в ленту</a>
+</div>
+</body>
+</html>
